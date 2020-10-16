@@ -25,7 +25,7 @@ XXX
 ```
 
 # Results reproduced
-All results from all methods used in the ECCO paper can be reproduced at 
+All results from all methods used in the OMR paper can be reproduced at 
 
  <https://github.com/willa0205/OMRreproduce>.
 
