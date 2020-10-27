@@ -1,0 +1,14 @@
+Package: OMR
+Type: Package
+Title: Title:Probabilistic Mendelian Randomization under the Omnigenic Genetic Architecture
+Version: 1.0
+Date: 2020-10-20
+Author: Lu Wang, Boran Gao, Yue Fun, and Xiang Zhou
+Maintainer: Lu Wang <willa0205@yeah.net>
+Description: Two-sampling Mendelian randomization analysis under omnigenic genetic architecture assumption.
+Encoding: UTF-8
+License: GPL (>= 2)
+Depends: R (>= 3.6.3)
+Imports: Rcpp (>= 1.0.4.6),foreach,doParallel,parallel
+LinkingTo: Rcpp, RcppArmadillo
+RoxygenNote: 7.1.0
