@@ -28,9 +28,9 @@ res=OMR(ny,nx,num.per,l.j,Z)
 
 # Example: body mass index (BMI) and asthma
 #### Data source
-* Exposure: 2,554,637 SNPs from GIANT consortium on BMI European ancestry (Locke AE, Kahali B, Berndt SI, Justice AE, Pers TH, Day FR, Powell C, Vedantam S, Buchkovich ML, Yang J, Croteau-Chonka DC, Esko T et al. (2015). Genetic studies of body mass index yield new insights for obesity biology. Nature 518, 197-206.).
-* Outcome: 2,001,280 SNPs from Trans-National Asthma Genetic Consortium (TAGC) on asthma European ancestry (Demenais et al ,2018 PMID 29273806). 
-* Reference: about 84.7 million SNPs from European ancestry from the 1,000 Genomes Project Phase3. (1000 Genomes Project Consortium, 2015)
+* Exposure: 2,554,637 SNPs from GIANT consortium on BMI European ancestry [Locke et al, 2015, PMID: 25673413].
+* Outcome: 2,001,280 SNPs from Trans-National Asthma Genetic Consortium (TAGC) on asthma European ancestry [Demenais et al ,2018, PMID 29273806]. 
+* Reference: about 84.7 million SNPs from European ancestry from the 1,000 Genomes Project Phase3 [1000 Genomes Project Consortium, 2015]. 
 
 #### Step 1. Load package and data
 The first step is to prepare the data set files. Datasets for exposure and outcome can be obtained using `wget`
