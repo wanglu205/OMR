@@ -83,7 +83,7 @@ data <- data_x_ref %>% inner_join(data_y_ref,by="SNP") %>%
 write.table(data$SNP,file="snp_list.txt",col.names = F,row.names = F,quote = F)
 ```
 #### Step 3. Calculate LD scores
-The LDSC (ref: Bulik-Sullivan, et al. LD Score Regression Distinguishes Confounding from Polygenicity in Genome-Wide Association Studies. Nature Genetics, 2015.) was employed to calculate LD Scores using reference panel.
+The LDSC ([Bulik-Sullivan, et al, 2015](https://www.nature.com/articles/ng.3211)) was employed to calculate LD Scores using reference panel.
 ```
 ./plink --bfile eur_chr_all --extract snp_list.txt --make-bed --out eur_for_BMI_asthma
 python ldsc.py --bfile eur_for_BMI_asthma --l2 --ld-wind-kb 10000 --out eur_for_BMI_asthma
