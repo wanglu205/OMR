@@ -1,7 +1,7 @@
 # OMR
-OMR is implemented as an open source R package for two-sampling Mendelian randomization analysis using omnigenic genetic architecture. 
+OMR is implemented as an open source R package for two-sampling Mendelian randomization analysis under omnigenic genetic architecture. 
 
-OMR makes an omnigenic modeling assumption on the SNP effects on the exposure variable and uses genome-wide SNPs as instrumental variables without pre-selection. OMR directly uses summary statistics and imposes a more general modeling assumption of horizontal pleiotropy than that used in the Egger regression. OMR takes LD information into account through joint modeling of all SNPs and relies on a scalable composite likelihood framework to infer causal effect. 
+OMR makes an omnigenic modeling assumption on the SNP effects on the exposure variable and uses genome-wide SNPs as instrumental variables without pre-selection. OMR directly uses summary statistics and imposes a more general modeling assumption of horizontal pleiotropy than that used in the Egger regression. OMR is also computationally scalable and represents an effective approach for MR analysis using GWAS summary statistics.
 
 # Installation
 OMR is implemented as an R package, which can be installed from GitHub.
@@ -13,17 +13,18 @@ install_github("wanglu205/OMR")
 ```
 
 # Usage
-The main functions is OMR. You can find the instructions and an example by '?OMR'.
+The main functions is omr. You can find the instructions and an example by '?omr'.
 
 # Example
 ```
+library(OMR)
 data(exampledata)
 ny <- exampledata$ny
 nx <- exampledata$nx
 num.per <- exampledata$num.per
 l.j <- exampledata$l.j
 Z <- exampledata$Z
-res=OMR(ny,nx,num.per,l.j,Z)
+res=omr(ny,nx,num.per,l.j,Z)
 ```
 
 # Example: body mass index (BMI) and asthma
@@ -40,19 +41,19 @@ wget ftp://ftp.ebi.ac.uk/pub/databases/gwas/summary_statistics/DemenaisF_2927380
 cd data/
 unzip TAGC_meta-analyses_results_for_asthma_risk.zip
 ```
-Let’s assume you have downloaded required data set and saved in the folder data/. We will read in the data set using fread. The bim file of Reference data was loaded and the MHC region was removed. The formatting procedure is provided below; you can follow the following steps to prepare data file or chose to use the already formatted data file. The formatted data files are available below.
+Let’s assume you have downloaded required data set and saved in the folder data/. We will read in the data set using fread. The bim file of Reference data was loaded and the MHC region was removed. The formatting procedure is provided below; you can follow the following steps to prepare data file or chose to use the already formatted data file. The formatted data files are available [here](https://github.com/wanglu205/example).
 ```
 library(data.table)
 library(dplyr)
-X<-fread("zcat /net/fantasia/home/borang/data2/real_data/hg_19/SNP_gwas_mc_merge_nogc.tbl.uniq.gz")
-Y <- fread("/net/mulan/home/yuef/realdata/asthma/raw_data/TAGC_Multiancestry_and_European-Ancestry_Meta-analyses_Results.tsv")
+X<-fread("zcat data/SNP_gwas_mc_merge_nogc.tbl.uniq.gz")
+Y <- fread("data/TAGC_Multiancestry_and_European-Ancestry_Meta-analyses_Results.tsv")
 nx <- round(mean(X$N))
 X <- X %>% select(SNP=SNP, beta.x = b, se.x = se, 
                    A1.x = A1, A2.x = A2) 
 Y <- Y %>% select(SNP=rsid, beta.y = European_ancestry_beta_rand, se.y = European_ancestry_se_rand, 
                    A1.y = alternate_allele, A2.y = reference_allele)
 ny <- 127669				   
-REF<-fread("/net/fantasia/home/borang/data2/real_data/ldscore_1000_genome_less_SNP/eur_chr_all.bim")
+REF<-fread("data/eur_chr_all.bim")
 REF <- REF %>% select(SNP=V2,CHR=V1,BP=V4,A1.ref = V5, A2.ref = V6) %>% 
        filter(!(CHR == 6 & BP>2*10^7&BP<3*10^7)) 
 nref <- 503
@@ -91,17 +92,27 @@ python ldsc.py --bfile eur_for_BMI_asthma --l2 --ld-wind-kb 10000 --out eur_for_
 #### Step 4. OMR analysis
 With prepared z-scores and LD scores, we could perform OMR using:
 ```
+library(OMR)
 Z <- cbind(data$z.y,data$z.x)
 LDscore<-read.table("eur_for_BMI_asthma.l2.ldscore.gz",header = T)
 l.j <- LDscore$L2
-res=OMR(ny,nx,nref,l.j,Z)
+res=omr(ny,nx,nref,l.j,Z,numCore=10)
+```
+The OMR results are as follows:
+```
+cat("Effect of risk exposure on the outcome of interest: ", res$alpha)
+## Effect of risk exposure on the outcome of interest: 0.1456646
+cat("Standard error of the effect of exposure on outcome: ", res$se)
+## Standard error of the effect of exposure on outcome: 0.01039172
+cat("p-value of the effect of exposure on outcome: ", res$pvalue)
+## p-value of the effect of exposure on outcome: 1.220515e-44
 ```
 # Results reproduced
 All results from all methods used in the OMR paper can be reproduced at 
 
- <https://github.com/willa0205/OMRreproduce>.
+ <https://github.com/wanglu205/OMRreproduce>.
 
-Details in [here](https://github.com/willa0205/OMRreproduce)
+Details in [here](https://github.com/wanglu205/OMRreproduce)
 
 ## Our group
 
