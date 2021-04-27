@@ -14,7 +14,7 @@
 #' 
 #' OMR makes an omnigenic modeling assumption on the SNP effects on the exposure variable and uses genome-wide SNPs as instrumental variables without pre-selection to enable more powerful MR method.
 #'   
-#' 
+#' @export
 #' @param nx an integer specifying the sample size in exposure study.
 #' @param ny an integer specifying the sample size in outcome study.
 #' @param n_ref an integer specifying the sample size in reference study.
@@ -33,7 +33,7 @@
 #' @examples 
 #' data(exampledata)
 #' attach(exampledata)
-#' res=OMR(ny,nx,num.per,l.j,Z)
+#' res=omr(ny,nx,num.per,l.j,Z)
 #' closeAllConnections()
 #' detach(exampledata)
 
@@ -43,7 +43,7 @@
 #         OMR Function
 #
 #############################################
-OMR <- function(ny,nx,num.per,l.j,Z,numCore=1,two_study=T){
+omr <- function(ny,nx,num.per,l.j,Z,numCore=1,two_study=T){
   registerDoParallel(cores=numCore)
   num.snp<-length(l.j)
   wind_size<-round(num.snp/100)
@@ -59,7 +59,7 @@ OMR <- function(ny,nx,num.per,l.j,Z,numCore=1,two_study=T){
     tmpt <- data.frame()
     jack_lj<-l.j[-c(interval_matrix[1,iVar]:interval_matrix[2,iVar])]
     jack_z<-Z[-c(interval_matrix[1,iVar]:interval_matrix[2,iVar]),]
-    iter <- Iteration(n1,n2,num.per,jack_lj,jack_z)
+    iter <- Iteration(ny,nx,num.per,jack_lj,jack_z)
     tmpt=rbind(tmpt,data.frame(alpha_loop=iter[1],sigma_beta_loop=iter[2],sigma_gamma_loop=iter[3],sigma_inverse_loop=iter[5],LogL_new=iter[8]))
     return(tmpt)
   }
@@ -77,7 +77,7 @@ OMR <- function(ny,nx,num.per,l.j,Z,numCore=1,two_study=T){
 #     Iterations 
 #
 #########################
-
+#' @export
 Iteration<-function(ny,nx,num.per,l.j,Z,two_study=T){
   num.snp<-length(l.j)
   z_1j <- Z[,1]^2

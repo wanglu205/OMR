@@ -5,6 +5,6 @@
 #' @import foreach
 #' @import doParallel
 #' @import inline
-#' @export OMR
+#' @export omr
 NULL
 

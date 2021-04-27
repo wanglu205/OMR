@@ -11,4 +11,4 @@ License: GPL (>= 2)
 Depends: R (>= 3.6.3)
 Imports: Rcpp (>= 1.0.4.6),foreach,doParallel,parallel
 LinkingTo: Rcpp, RcppArmadillo
-RoxygenNote: 7.1.0
+RoxygenNote: 7.1.1
