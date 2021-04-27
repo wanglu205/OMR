@@ -45,7 +45,7 @@ Let’s assume you have downloaded required data set and saved in the folder dat
 ```
 library(data.table)
 library(dplyr)
-X<-fread("zcat data/SNP_gwas_mc_merge_nogc.tbl.uniq.gz")
+X <-fread("zcat data/SNP_gwas_mc_merge_nogc.tbl.uniq.gz")
 Y <- fread("data/TAGC_Multiancestry_and_European-Ancestry_Meta-analyses_Results.tsv")
 nx <- round(mean(X$N))
 X <- X %>% select(SNP=SNP, beta.x = b, se.x = se, 
@@ -53,7 +53,7 @@ X <- X %>% select(SNP=SNP, beta.x = b, se.x = se,
 Y <- Y %>% select(SNP=rsid, beta.y = European_ancestry_beta_rand, se.y = European_ancestry_se_rand, 
                    A1.y = alternate_allele, A2.y = reference_allele)
 ny <- 127669				   
-REF<-fread("data/eur_chr_all.bim")
+REF <-fread("data/eur_chr_all.bim")
 REF <- REF %>% select(SNP=V2,CHR=V1,BP=V4,A1.ref = V5, A2.ref = V6) %>% 
        filter(!(CHR == 6 & BP>2*10^7&BP<3*10^7)) 
 nref <- 503
@@ -94,9 +94,9 @@ With prepared z-scores and LD scores, we could perform OMR using:
 ```
 library(OMR)
 Z <- cbind(data$z.y,data$z.x)
-LDscore<-read.table("eur_for_BMI_asthma.l2.ldscore.gz",header = T)
+LDscore <-read.table("eur_for_BMI_asthma.l2.ldscore.gz",header = T)
 l.j <- LDscore$L2
-res=omr(ny,nx,nref,l.j,Z,numCore=10)
+res <- omr(ny,nx,nref,l.j,Z,numCore=10)
 ```
 The OMR results are as follows:
 ```
